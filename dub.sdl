@@ -7,16 +7,15 @@ license "Boost"
 
 copyFiles "config.yml"
 
-dependency "vibe-d:web" version="~>0.9"
-dependency "dyaml" version="~>0.8"
-dependency "dfmt" version="~>0.14"
+dependency "vibe-d:web" version="~>0.10"
+dependency "dyaml" version="~>0.10"
+dependency "dfmt" version="~>0.15"
 dependency "mustache-d" version="~>0.1"
 
 targetPath "build"
 
 // debugVersions "CodeHash"
-
-dflags "-preview=shortenedMethods"
+//dflags "-preview=shortenedMethods"
 
 configuration "executable" {
 	targetType "executable"
