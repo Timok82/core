@@ -15,7 +15,7 @@ dependency "mustache-d" version="~>0.1"
 targetPath "build"
 
 // debugVersions "CodeHash"
-//dflags "-preview=shortenedMethods"
+// dflags "-preview=shortenedMethods"
 
 configuration "executable" {
 	targetType "executable"
