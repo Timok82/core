@@ -1,0 +1,32 @@
+name "dlang-tour"
+description "The Dlang Tour"
+copyright "Copyright © 2016, André Stein"
+authors "André Stein" "Sebastian Wilzbach" "Petar Kirov"
+homepage "http://tour.dlang.org"
+license "Boost"
+
+copyFiles "config.yml"
+
+dependency "vibe-d:web" version="~>0.10"
+dependency "dyaml" version="~>0.10"
+dependency "dfmt" version="~>0.15"
+dependency "mustache-d" version="~>0.1"
+
+targetPath "build"
+
+// debugVersions "CodeHash"
+// dflags "-preview=shortenedMethods"
+
+configuration "executable" {
+	targetType "executable"
+	versions "VibeDefaultMain"
+}
+configuration "static" {
+	targetType "executable"
+	versions "VibeDefaultMain"
+	lflags "-lz" "-lssl" "-lcrypto" "-ldl" platform="posix"
+	dflags "-static" platform="posix"
+}
+configuration "library" {
+	versions "VibeCustomMain"
+}
