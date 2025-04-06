@@ -66,7 +66,7 @@ class StupidLocal: IExecProvider
 		return File(tempname, "wb");
 	}
 
-	Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input)
+	@trusted Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input)
 	{
 		import std.array : join, split;
 		import std.algorithm.searching : canFind;

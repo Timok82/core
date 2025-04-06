@@ -19,7 +19,7 @@ interface IExecProvider
 		string stdin;
 		bool color;
 	}
-	Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input);
+	@trusted Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input);
 
 
 	// returns a list of all installed DUB packages

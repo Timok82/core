@@ -101,7 +101,7 @@ class Docker: IExecProvider
 			assert(receiveOnly!bool, "Docker pull failed");
 	}
 
-	Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input)
+	@trusted Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input)
 	{
 		import std.string: format;
 		import std.algorithm.searching : canFind, find;

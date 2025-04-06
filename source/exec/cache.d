@@ -41,7 +41,7 @@ class Cache: IExecProvider
 		//assert(sourceCodeWhitelist.length == this.allowedSources_.length);
 	}
 
-	Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input)
+	@trusted Tuple!(string, "output", bool, "success") compileAndExecute(RunInput input)
 	{
 		import std.range: assumeSorted;
 		import std.algorithm: min, canFind;
