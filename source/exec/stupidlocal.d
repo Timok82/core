@@ -12,6 +12,7 @@ import std.file: exists, remove, tempDir;
 import std.stdio: File;
 import std.random: uniform;
 import std.string: stripRight, format;
+import std.path:buildPath;
 
 // searches the local system for valid D compilers
 private string findDCompiler()
@@ -48,7 +49,7 @@ class StupidLocal: IExecProvider
 	private File getTempFile()
 	{
 		auto tempdir = tempDir().stripRight("/");  // dub has issues with // in path
-
+    
 		static string randomName()
 		{
 			enum Length = 10;
@@ -61,7 +62,9 @@ class StupidLocal: IExecProvider
 
 		string tempname;
 		do {
-			tempname = "%s/temp_dlang_tour_%s.d".format(tempdir, randomName());
+			//tempname = "%s/temp_dlang_tour_%s.d".format(tempdir, randomName());
+			tempname = buildPath(tempdir, "temp_dlang_tour_%s.d".format(randomName())); // using buildPath
+		
 		} while (exists(tempname));
 		return File(tempname, "wb");
 	}
@@ -112,7 +115,8 @@ class StupidLocal: IExecProvider
 				{
 					args = [dCompiler];
 					args ~= input.args.split(" ");
-					args ~= "-color=" ~ (input.color ? "on " : "off ");
+					//args ~= "-color=" ~ (input.color ? "on " : "off ");
+					args ~= "-color=" ~ (input.color ? "on" : "off"); //removed space after "on"/"off"
 					args ~= "-run";
 					args ~= tmpfile.name;
 					args ~= input.runtimeArgs.split(" ");
@@ -121,11 +125,14 @@ class StupidLocal: IExecProvider
 					auto env = [
 						"TERM": "dtour"
 					];
+					/*
 					auto fakeTty = `
 	faketty () {	 script -qfc "$(printf "%q " "$@")" /dev/null ; }
 	faketty ` ~ 	args.join(" ") ~  ` | cat | sed 's/\r$//'`;
 
 					res = fakeTty.executeShell(env);
+					*/
+					res = execute(args/*, environment=env*/); // using execute
 				}
 				result.success = res.status == 0;
 				result.output = res.output;
