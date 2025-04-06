@@ -32,7 +32,7 @@ class ApiV1: IApiV1
 		Note: parsing s just done when $(D output.success)
 		is false.
 	+/
-	private static void parseErrorsAndWarnings(ref RunOutput output)
+	@trusted private static void parseErrorsAndWarnings(ref RunOutput output)
 	{
 		import std.regex: ctRegex, matchFirst, replaceAll;
 		import std.conv: to;
@@ -72,7 +72,7 @@ class ApiV1: IApiV1
 	// to be enough for everybody.
 	enum uint maxSourceCodeLength = 64 * 1024;
 
-	RunOutput run(ApiV1.RunInput input)
+	@safe RunOutput run(ApiV1.RunInput input)
 	{
 		if (input.source.length > maxSourceCodeLength) {
 			return RunOutput("ERROR: source code size is above limit of 64k bytes.", false);
@@ -96,7 +96,7 @@ class ApiV1: IApiV1
 		return output;
 	}
 
-	FormatOutput format(string source)
+	@trusted FormatOutput format(string source)
 	{
 		// https://github.com/dlang-community/dfmt/blob/master/src/dfmt/config.d
 		import dfmt.config : Config;
@@ -118,7 +118,7 @@ class ApiV1: IApiV1
 		return output;
 	}
 
-	ShortenOutput shorten(string source, string compiler, string args)
+	@safe ShortenOutput shorten(string source, string compiler, string args)
 	{
 		import std.format : format;
 		import std.uri : encodeComponent;
@@ -136,7 +136,7 @@ class ApiV1: IApiV1
 		return output;
 	}
 
-	GistOutput gist(string source, string compiler, string args)
+	@safe GistOutput gist(string source, string compiler, string args)
 	{
 		import std.format : format;
 		import std.uri : encodeComponent;
@@ -184,7 +184,7 @@ unittest
 	assert(res == FormatOutput("void main()\n{\n}", false));
 }
 
-	SourceOutput getSource(string _language, string _chapter, string _section)
+	@safe SourceOutput getSource(string _language, string _chapter, string _section)
 	{
 		auto tourData = contentProvider_.getContent(_language, _chapter, _section);
 		if (tourData.content == null) {
@@ -245,7 +245,7 @@ Failed: ["dmd", "-v", "-o-", "onlineapp.d", "-I."]`;
 }
 
 // remove weird unicode spaces
-private string removeUnicodeSpaces(S)(S input) {
+@trusted private string removeUnicodeSpaces(S)(S input) {
 	import std.algorithm.iteration : map;
 	import std.array : array;
 	import std.uni : isSpace;
